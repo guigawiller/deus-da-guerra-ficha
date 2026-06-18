@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ficha de Arsenal</title>
+  <style>
+@font-face {
+    font-family: 'tormenta20';
+    src: url('static/Tormenta20.ttf');
+}
+@font-face{font-family:iowanOldStyleBold;src:url('/static/Iowan Old Style Bold.otf') format('opentype')}
+@font-face{font-family:iowanOldStyleRegular;src:url('/static/Iowan Old Style Regular.ttf') format('truetype')}
+:root{--red:#b6292e;--dark-red:#3f0f12;--red-title:#d13235;--gold:#f0dc82;--paper:#f8f5ee;--ink:#351012}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;background:radial-gradient(circle at top,#f8f5ee 0,#efe8db 36%,#d8c8aa 100%);color:var(--ink);font-family:iowanOldStyleRegular,Georgia,serif}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;background:linear-gradient(90deg,#7d1116 0 6px,transparent 6px calc(100% - 6px),#7d1116 calc(100% - 6px)),linear-gradient(#7d1116 0 6px,transparent 6px calc(100% - 6px),#7d1116 calc(100% - 6px));opacity:.9}
+.app{max-width:760px;margin:auto;padding:18px}
+h1{text-align:center;font-family:tormenta20,iowanOldStyleBold,Georgia,serif;font-weight:normal;font-size:42px;color:var(--red-title);letter-spacing:1px;text-shadow:1px 1px 0 #fff;margin:8px 0 14px}
+h2{margin:0 0 12px;font-family:iowanOldStyleBold,Georgia,serif;font-weight:normal;color:var(--gold);font-variant:small-caps;font-size:25px}
+section{margin-bottom:16px}
+.card{position:relative;background:var(--red);color:#fff;border:14px solid transparent;border-image:linear-gradient(135deg,#7a191d,#c93a3e,#7a191d) 1;padding:16px;box-shadow:0 5px 14px #0004}
+.card:before,.card:after{content:"";position:absolute;right:-18px;width:24px;height:22px;background:var(--red);clip-path:polygon(0 0,100% 50%,0 100%)}
+.card:before{top:22px}.card:after{bottom:22px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+label{display:block;margin:11px 0;font-family:iowanOldStyleBold,Georgia,serif;font-weight:normal;font-variant:small-caps;color:#fff;font-size:18px}
+input,select,textarea{width:100%;margin-top:5px;padding:10px 12px;border-radius:4px;border:2px solid var(--gold);background:#3b090b;color:#fff;font-family:iowanOldStyleRegular,Georgia,serif;font-size:18px;outline:none}
+input:focus,select:focus,textarea:focus{box-shadow:0 0 0 2px #f0dc8277}
+button{padding:12px 14px;border:2px solid var(--dark-red);border-radius:5px;background:var(--dark-red);color:var(--gold);font-family:iowanOldStyleBold,Georgia,serif;font-weight:normal;font-size:17px;margin:4px;cursor:pointer;transition:.2s}
+button:hover{background:#5a1519;border-color:var(--gold);transform:translateY(-1px)}
+button.primary{background:var(--dark-red);width:100%;margin-top:12px;color:var(--gold);font-size:21px;padding:17px}
+button.danger{background:var(--dark-red);width:100%;margin-bottom:30px;color:var(--gold);font-size:18px;padding:16px}
+.row{display:flex;gap:8px}.row button{flex:1}
+.item{display:flex;gap:8px;margin:8px 0}.item input{margin:0}.item button{background:#7a191d;min-width:48px}
+pre{white-space:pre-wrap;background:#fff8e8;color:#4b1014;border:2px solid var(--gold);padding:12px;border-radius:4px;font-family:iowanOldStyleRegular,Georgia,serif;font-size:16px;line-height:1.45}
+ul{line-height:1.8;color:#fff;font-size:18px}
+small{display:block;color:#ffe9a4;margin-top:8px;font-size:15px}
+.bonus-item{display:grid;grid-template-columns:1fr .8fr 1.5fr auto;gap:8px;margin:8px 0}.bonus-item input,.bonus-item select{margin:0}.bonus-item button{background:#7a191d;min-width:48px}
+.tabs{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin:10px 0 18px}.tab{font-size:20px;padding:15px;background:#fff8e8;color:var(--red-title);border-color:var(--red-title);font-variant:small-caps}.tab.active{background:var(--red);color:var(--gold);border-color:var(--gold)}
+.tab-content{display:none}.tab-content.active{display:block}.num-row button{font-size:28px;padding:14px 0;min-height:56px}.card>button:not(.primary):not(.danger){width:100%;font-size:18px;padding:15px}
+@media(max-width:520px){.app{padding:12px}.grid2{grid-template-columns:1fr}h1{font-size:32px}.bonus-item{grid-template-columns:1fr 1fr}.bonus-item .bonus-nome{grid-column:1/3}.bonus-item button{grid-column:1/3;width:100%}.tabs{gap:5px}.tab{font-size:17px;padding:12px 6px}}
+</style>
+</head>
+<body>
+  <main class="app">
+    <h1>Ficha de Arsenal</h1>
+
+    <nav class="tabs">
+      <button id="tabFichaBtn" class="tab active" onclick="showTab('ficha')">Ficha</button>
+      <button id="tabCombateBtn" class="tab" onclick="showTab('combate')">Combate</button>
+      <button id="tabTesteBtn" class="tab" onclick="showTab('teste')">Teste</button>
+    </nav>
+
+    <div id="tabFicha" class="tab-content active">
+      <section class="card grid2">
+        <div>
+          <h2>PV</h2>
+          <label>Máx.<input id="pvMax" type="number" /></label>
+          <div class="row num-row"><button onclick="changeNum('pvMax',-1)">-</button><button onclick="changeNum('pvMax',1)">+</button></div>
+          <label>Atual<input id="pvAtual" type="number" /></label>
+          <div class="row num-row"><button onclick="changeNum('pvAtual',-1)">-</button><button onclick="changeNum('pvAtual',1)">+</button></div>
+        </div>
+        <div>
+          <h2>PM</h2>
+          <label>Máx.<input id="pmMax" type="number" /></label>
+          <div class="row num-row"><button onclick="changeNum('pmMax',-1)">-</button><button onclick="changeNum('pmMax',1)">+</button></div>
+          <label>Atual<input id="pmAtual" type="number" /></label>
+          <div class="row num-row"><button onclick="changeNum('pmAtual',-1)">-</button><button onclick="changeNum('pmAtual',1)">+</button></div>
+        </div>
+      </section>
+
+      <section class="card grid2">
+        <div>
+          <label>Força<input id="forca" type="number" /></label>
+          <div class="row num-row"><button onclick="changeNum('forca',-1)">-</button><button onclick="changeNum('forca',1)">+</button></div>
+        </div>
+        <div>
+          <label>Habilidade<input id="habilidade" type="number" /></label>
+          <div class="row num-row"><button onclick="changeNum('habilidade',-1)">-</button><button onclick="changeNum('habilidade',1)">+</button></div>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>Itens adquiridos</h2>
+        <label>Total<input id="itensAdquiridos" type="number" min="0" /></label>
+        <div class="row num-row"><button onclick="changeItensAdquiridos(-1)">-</button><button onclick="changeItensAdquiridos(1)">+</button></div>
+        <small>Cada item adquirido aumenta o PV máximo em 1. Ao diminuir, reduz o PV máximo em 1.</small>
+      </section>
+
+      <section class="card">
+        <h2>Equipamento essencial</h2>
+        <ul>
+          <li>Armadura do Arsenal</li>
+          <li>Martelo dos Trovões</li>
+          <li>Algibeira Infinita</li>
+        </ul>
+      </section>
+
+      <section class="card"><h2>Itens equipados</h2><div id="itensEquipados"></div><button onclick="addItem('itensEquipados')">Adicionar</button></section>
+      <section class="card"><h2>Itens da algibeira</h2><div id="itensAlgibeira"></div><button onclick="addItem('itensAlgibeira')">Adicionar</button></section>
+      <section class="card"><h2>Bônus temporários</h2><div id="bonusTemp"></div><button onclick="addBonusTemp()">Adicionar</button><small>Força e Habilidade entram automaticamente no simulador de combate.</small></section>
+      <section class="card"><h2>Bônus permanentes</h2><div id="bonusPerm"></div><button onclick="addItem('bonusPerm')">Adicionar</button></section>
+
+      <button class="danger" onclick="resetarTudo()">Resetar ficha</button>
+    </div>
+
+    <div id="tabCombate" class="tab-content">
+      <section class="card">
+        <h2>Simulador de combate</h2>
+        <label>Atributo usado
+          <select id="atributoCombate"><option value="forca">Força</option><option value="habilidade">Habilidade</option></select>
+        </label>
+        <label>Bônus manual do jogador<input id="bonusJogador" type="number" value="0" /></label>
+        <div class="row num-row"><button onclick="changeNum('bonusJogador',-1)">-</button><button onclick="changeNum('bonusJogador',1)">+</button></div>
+        <label>Dados do jogador<input id="dadosJogador" type="number" value="1" min="1" /></label>
+        <div class="row num-row"><button onclick="changeNum('dadosJogador',-1,1)">-</button><button onclick="changeNum('dadosJogador',1,1)">+</button></div>
+        <label>Atributo do oponente<input id="atributoOponente" type="number" value="0" /></label>
+        <div class="row num-row"><button onclick="changeNum('atributoOponente',-1)">-</button><button onclick="changeNum('atributoOponente',1)">+</button></div>
+        <label>Dados do oponente<input id="dadosOponente" type="number" value="1" min="1" /></label>
+        <div class="row num-row"><button onclick="changeNum('dadosOponente',-1,1)">-</button><button onclick="changeNum('dadosOponente',1,1)">+</button></div>
+        <button class="primary" onclick="simularCombate()">Rolar combate</button>
+        <pre id="resultadoCombate"></pre>
+      </section>
+    </div>
+
+    <div id="tabTeste" class="tab-content">
+      <section class="card">
+        <h2>Teste de atributo</h2>
+        <label>Atributo testado
+          <select id="atributoTeste"><option value="forca">Força</option><option value="habilidade">Habilidade</option></select>
+        </label>
+        <label>Dados de seis lados<input id="dadosTeste" type="number" value="1" min="1" /></label>
+        <div class="row num-row"><button onclick="changeNum('dadosTeste',-1,1)">-</button><button onclick="changeNum('dadosTeste',1,1)">+</button></div>
+        <button class="primary" onclick="rolarTeste()">Rolar teste</button>
+        <pre id="resultadoTeste"></pre>
+      </section>
+    </div>
+  </main>
+  <script>
+
+function showTab(tab){
+  document.getElementById('tabFicha').classList.toggle('active', tab === 'ficha');
+  document.getElementById('tabCombate').classList.toggle('active', tab === 'combate');
+  document.getElementById('tabTeste').classList.toggle('active', tab === 'teste');
+  document.getElementById('tabFichaBtn').classList.toggle('active', tab === 'ficha');
+  document.getElementById('tabCombateBtn').classList.toggle('active', tab === 'combate');
+  document.getElementById('tabTesteBtn').classList.toggle('active', tab === 'teste');
+}
+const fields = ['pvMax','pvAtual','pmMax','pmAtual','forca','habilidade','itensAdquiridos','dadosTeste'];
+const lists = ['itensEquipados','itensAlgibeira','bonusTemp','bonusPerm'];
+
+const defaults = {
+  pvMax: '30',
+  pvAtual: '30',
+  pmMax: '20',
+  pmAtual: '20',
+  forca: '13',
+  habilidade: '11',
+  itensAdquiridos: '0',
+  dadosTeste: '1'
+};
+
+const bonusTipos = ['forca', 'habilidade', 'pv', 'pm', 'outros'];
+const itensDisponiveis = [
+"[i] Algoz de Kally",
+"[i] Anel do Tempo",
+"[i] Botas de Alward",
+"[i] Escudo Impérvio",
+"[i] Medalha do Deicida",
+"[i] Monóculo da Verdade",
+"[i] Montante Uivante",
+"[i] Pelego do Descanso",
+"[i] Símbolo Sagrado Primordial",
+"[i] Turbante Planar",
+"[i] Tridente Sibilante",
+"[a] Alabarda de Sirrannamena",
+"[a] Algoz de Allihanna",
+"[a] Anal da Barreira",
+"[a] Broquel de Nordman",
+"[a] Canhão Final",
+"[a] Centelha Solar",
+"[a] Coroa de Chamas",
+"[a] Espaldar dos Intocáveis",
+"[a] Espada de Asloth",
+"[a] Espada de Yugraz",
+"[a] Granadas Flamejantes",
+"[a] Lua Minguante",
+"[a] Luz das Estrelas",
+"[a] Martelo dos Relâmpagos",
+"[a] Nuvem de Al-Gazara",
+"[a] Picareta de Marmaduk",
+"[a] Ruína da Civilização",
+"[a] Slash Calliber"
+];
+function load(){
+  const data = JSON.parse(localStorage.getItem('fichaArsenal') || '{}');
+  fields.forEach(id => document.getElementById(id).value = data[id] ?? defaults[id] ?? '');
+  document.getElementById('atributoTeste').value = data.atributoTeste ?? 'forca';
+  lists.forEach(id => renderList(id, data[id] || []));
+}
+
+function save(){
+  const data = {};
+  fields.forEach(id => data[id] = document.getElementById(id).value);
+  data.atributoTeste = document.getElementById('atributoTeste').value;
+
+  data.itensEquipados = getSimpleList('itensEquipados');
+  data.itensAlgibeira = getSimpleList('itensAlgibeira');
+  data.bonusPerm = getSimpleList('bonusPerm');
+  data.bonusTemp = getBonusTempList();
+
+  localStorage.setItem('fichaArsenal', JSON.stringify(data));
+}
+
+function getSimpleList(id){
+  return [...document.querySelectorAll(`#${id} select`)]
+    .map(i => i.value)
+    .filter(Boolean);
+}
+
+function getBonusTempList(){
+  return [...document.querySelectorAll('#bonusTemp .bonus-item')].map(div => ({
+    tipo: div.querySelector('.bonus-tipo').value,
+    valor: div.querySelector('.bonus-valor').value,
+    nome: div.querySelector('.bonus-nome').value
+  })).filter(item => item.nome || item.valor);
+}
+
+function changeNum(id, delta, min = null){
+  const el = document.getElementById(id);
+  let value = parseInt(el.value || 0) + delta;
+  if(min !== null) value = Math.max(min, value);
+  el.value = value;
+  save();
+}
+
+function changeItensAdquiridos(delta){
+  const contador = document.getElementById('itensAdquiridos');
+  const pvMax = document.getElementById('pvMax');
+  const atual = parseInt(contador.value || 0);
+  const novo = Math.max(0, atual + delta);
+  const diferenca = novo - atual;
+
+  contador.value = novo;
+  pvMax.value = parseInt(pvMax.value || 0) + diferenca;
+  save();
+}
+
+function renderList(id, items){
+  const box = document.getElementById(id);
+  box.innerHTML = '';
+  items.forEach(item => {
+    if(id === 'bonusTemp') addBonusTemp(item, false);
+    else addItem(id, item, false);
+  });
+}
+
+function addItem(id, value = '', shouldSave = true){
+  const box = document.getElementById(id);
+
+  const div = document.createElement('div');
+  div.className = 'item';
+
+  div.innerHTML = `
+    <select onchange="save()">
+      <option value="">Selecione...</option>
+      ${itensDisponiveis.map(item =>
+        `<option value="${item}" ${item === value ? 'selected' : ''}>${item}</option>`
+      ).join('')}
+    </select>
+
+    <button onclick="this.parentElement.remove();save()">X</button>
+  `;
+
+  box.appendChild(div);
+
+  if(shouldSave) save();
+}
+
+function addBonusTemp(item = {}, shouldSave = true){
+  if(typeof item === 'string') item = { tipo: 'outros', valor: '', nome: item };
+
+  const box = document.getElementById('bonusTemp');
+  const div = document.createElement('div');
+  div.className = 'bonus-item';
+  div.innerHTML = `
+    <select class="bonus-tipo" onchange="save()">
+      ${bonusTipos.map(tipo => `<option value="${tipo}" ${item.tipo === tipo ? 'selected' : ''}>${labelTipo(tipo)}</option>`).join('')}
+    </select>
+    <input class="bonus-valor" type="number" value="${escapeHtml(item.valor || '')}" placeholder="Valor" oninput="save()">
+    <input class="bonus-nome" value="${escapeHtml(item.nome || '')}" placeholder="Descrição" oninput="save()">
+    <button onclick="this.parentElement.remove();save()">X</button>`;
+  box.appendChild(div);
+  if(shouldSave) save();
+}
+
+function labelTipo(tipo){
+  return { forca: 'Força', habilidade: 'Habilidade', pv: 'PV', pm: 'PM', outros: 'Outros' }[tipo] || tipo;
+}
+
+function escapeHtml(str){
+  return String(str).replaceAll('&','&amp;').replaceAll('"','&quot;').replaceAll('<','&lt;').replaceAll('>','&gt;');
+}
+
+function rolar(qtd){
+  return Array.from({length: Math.max(1, parseInt(qtd || 1))}, () => Math.floor(Math.random() * 6) + 1);
+}
+
+function bonusTemporarioPorTipo(tipo){
+  return getBonusTempList()
+    .filter(item => item.tipo === tipo)
+    .reduce((total, item) => total + parseInt(item.valor || 0), 0);
+}
+
+function simularCombate(){
+  const atributo = document.getElementById('atributoCombate').value;
+  const valorAtributo = parseInt(document.getElementById(atributo).value || 0);
+  const bonusManual = parseInt(document.getElementById('bonusJogador').value || 0);
+  const bonusAuto = bonusTemporarioPorTipo(atributo);
+  const bonusTotal = bonusManual + bonusAuto;
+  const dadosJ = rolar(document.getElementById('dadosJogador').value);
+  const dadosO = rolar(document.getElementById('dadosOponente').value);
+  const atrOponente = parseInt(document.getElementById('atributoOponente').value || 0);
+  const somaJ = dadosJ.reduce((a,b)=>a+b,0);
+  const somaO = dadosO.reduce((a,b)=>a+b,0);
+  const totalJ = valorAtributo + bonusTotal + somaJ;
+  const totalO = atrOponente + somaO;
+  let resultado;
+  if (totalO > totalJ) {
+    resultado = `Jogador tomou ${totalO - totalJ} de dano`;
+  } else if (totalJ > totalO) {
+    resultado = `Oponente tomou ${totalJ - totalO} de dano`;
+  } else {
+    resultado = 'Empate: ninguém tomou dano';
+  }
+
+  document.getElementById('resultadoCombate').textContent =
+`Jogador (${labelTipo(atributo)})\nDados: ${dadosJ.join(', ')}\nBônus temporário automático: ${bonusAuto}\nBônus manual: ${bonusManual}\nTotal: ${valorAtributo} + ${bonusTotal} + ${somaJ} = ${totalJ}\n\nOponente\nDados: ${dadosO.join(', ')}\nTotal: ${atrOponente} + ${somaO} = ${totalO}\n\nResultado: ${resultado}`;
+}
+
+
+function rolarTeste(){
+  const atributo = document.getElementById('atributoTeste').value;
+  const valorAtributo = parseInt(document.getElementById(atributo).value || 0);
+  const bonusAuto = bonusTemporarioPorTipo(atributo);
+  const dados = rolar(document.getElementById('dadosTeste').value);
+  const somaDados = dados.reduce((a,b)=>a+b,0);
+  const total = valorAtributo + bonusAuto + somaDados;
+
+  document.getElementById('resultadoTeste').textContent =
+`${labelTipo(atributo)}
+Dados: ${dados.join(', ')}
+Bônus temporário automático: ${bonusAuto}
+Total: ${valorAtributo} + ${bonusAuto} + ${somaDados} = ${total}`;
+
+  save();
+}
+
+function resetarTudo(){
+  if(confirm('Apagar todos os dados da ficha?')){
+    localStorage.removeItem('fichaArsenal');
+    location.reload();
+  }
+}
+
+document.addEventListener('input', e => { if(fields.includes(e.target.id)) save(); });
+document.getElementById('atributoTeste').addEventListener('change', save);
+load();
+
+  </script>
+</body>
+</html>
