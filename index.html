@@ -299,6 +299,26 @@
     }
 
 
+
+    .grid-mobile-2 {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .grid-mobile-2 .controle-numero button {
+      width: 34px;
+      height: 34px;
+      min-width: 34px;
+      min-height: 34px;
+      font-size: 18px;
+    }
+
+    .grid-mobile-2 .controle-numero input {
+      padding-left: 6px;
+      padding-right: 6px;
+    }
+
     .controle-numero {
       display: flex;
       align-items: center;
@@ -341,10 +361,6 @@
         padding: 10px;
       }
 
-      .grid2 {
-        grid-template-columns: 1fr;
-      }
-
       h1 {
         font-size: 28px;
         margin-bottom: 10px;
@@ -368,6 +384,26 @@
 
       .num-row {
         gap: 4px;
+      }
+
+
+      .grid-mobile-2 {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+      }
+
+      .grid-mobile-2 .controle-numero button {
+        width: 34px;
+        height: 34px;
+        min-width: 34px;
+        min-height: 34px;
+        font-size: 18px;
+      }
+
+      .grid-mobile-2 .controle-numero input {
+        padding-left: 6px;
+        padding-right: 6px;
       }
 
       .controle-numero {
@@ -425,6 +461,12 @@
         padding: 12px;
       }
     }
+
+    @media(max-width:360px) {
+      .grid-mobile-2 {
+        grid-template-columns: 1fr;
+      }
+    }
   </style>
 </head>
 
@@ -439,7 +481,7 @@
     </nav>
 
     <div id="tabFicha" class="tab-content active">
-      <section class="card grid2">
+      <section class="card grid2 grid-mobile-2">
         <div>
           <h2>PV</h2>
           <label class="campo-numero-label">Máx.</label>
@@ -472,7 +514,7 @@
         </div>
       </section>
 
-      <section class="card grid2">
+      <section class="card grid2 grid-mobile-2">
         <div>
           <label class="campo-numero-label">Força</label>
           <div class="controle-numero">
@@ -534,7 +576,7 @@
 
     <div id="tabCombate" class="tab-content">
       <section class="card">
-        <div class="grid2">
+        <div class="grid2 grid-mobile-2">
           <div>
             <label>PV Arsenal
               <input id="pvArsenalCombate" type="number" readonly />
@@ -557,29 +599,41 @@
             <option value="habilidade">Habilidade</option>
           </select>
         </label>
-        <label class="campo-numero-label">Bônus manual do jogador</label>
-        <div class="controle-numero">
-          <button onclick="changeNum('bonusJogador',-1)">-</button>
-          <input id="bonusJogador" type="number" value="0" />
-          <button onclick="changeNum('bonusJogador',1)">+</button>
+        <div class="grid-mobile-2">
+          <div>
+            <label class="campo-numero-label">Bônus manual do jogador</label>
+            <div class="controle-numero">
+              <button onclick="changeNum('bonusJogador',-1)">-</button>
+              <input id="bonusJogador" type="number" value="0" />
+              <button onclick="changeNum('bonusJogador',1)">+</button>
+            </div>
+          </div>
+          <div>
+            <label class="campo-numero-label">Dados do jogador</label>
+            <div class="controle-numero">
+              <button onclick="changeNum('dadosJogador',-1,1)">-</button>
+              <input id="dadosJogador" type="number" value="2" min="1" />
+              <button onclick="changeNum('dadosJogador',1,1)">+</button>
+            </div>
+          </div>
         </div>
-        <label class="campo-numero-label">Dados do jogador</label>
-        <div class="controle-numero">
-          <button onclick="changeNum('dadosJogador',-1,1)">-</button>
-          <input id="dadosJogador" type="number" value="2" min="1" />
-          <button onclick="changeNum('dadosJogador',1,1)">+</button>
-        </div>
-        <label class="campo-numero-label">Atributo do oponente</label>
-        <div class="controle-numero">
-          <button onclick="changeNum('atributoOponente',-1)">-</button>
-          <input id="atributoOponente" type="number" value="10" />
-          <button onclick="changeNum('atributoOponente',1)">+</button>
-        </div>
-        <label class="campo-numero-label">Dados do oponente</label>
-        <div class="controle-numero">
-          <button onclick="changeNum('dadosOponente',-1,1)">-</button>
-          <input id="dadosOponente" type="number" value="2" min="1" />
-          <button onclick="changeNum('dadosOponente',1,1)">+</button>
+        <div class="grid-mobile-2">
+          <div>
+            <label class="campo-numero-label">Atributo do oponente</label>
+            <div class="controle-numero">
+              <button onclick="changeNum('atributoOponente',-1)">-</button>
+              <input id="atributoOponente" type="number" value="10" />
+              <button onclick="changeNum('atributoOponente',1)">+</button>
+            </div>
+          </div>
+          <div>
+            <label class="campo-numero-label">Dados do oponente</label>
+            <div class="controle-numero">
+              <button onclick="changeNum('dadosOponente',-1,1)">-</button>
+              <input id="dadosOponente" type="number" value="2" min="1" />
+              <button onclick="changeNum('dadosOponente',1,1)">+</button>
+            </div>
+          </div>
         </div>
         <button class="primary" onclick="simularCombate()">Rolar combate</button>
         <pre id="resultadoCombate"></pre>
